@@ -1,29 +1,25 @@
 #include "protocol/frames.hpp"
-#include <asio.hpp> // Using Asio for network byte order utilities
+#include <asio.hpp>
 
 namespace tc::protocol {
 
-// This function takes a JSON object and wraps it in our "TC" binary header
-std::vector<uint8_t> serialize(const nlohmann::json& j) {
-    std::string serial_json = j.dump();
-    uint16_t payload_size = static_cast<uint16_t>(serial_json.size());
+std::vector<uint8_t> serialize(uint8_t type, const nlohmann::json& j) {
+    std::string serialized_json = j.dump();
+    uint32_t len = static_cast<uint32_t>(serialized_json.size());
 
-    // Prepare buffer: 4 bytes header + payload
-    std::vector<uint8_t> buffer(4 + payload_size);
+    MsgHeader header;
+    header.type = type;
+    header.payload_length = htonl(len);
 
-    // [0-1] Magic Bytes 'T' 'C'
-    buffer[0] = 0x54;
-    buffer[1] = 0x43;
+    std::vector<uint8_t> buffer;
+    buffer.reserve(sizeof(MsgHeader) + len);
 
-    // [2-3] Payload Length in Big-Endian (Network Byte Order)
-    // Section 6.1 requirement
-    uint16_t net_len = htons(payload_size);
-    std::memcpy(&buffer[2], &net_len, sizeof(uint16_t));
+    uint8_t* header_ptr = reinterpret_cast<uint8_t*>(&header);
+    buffer.insert(buffer.end(), header_ptr, header_ptr + sizeof(MsgHeader));
 
-    // Payload
-    std::memcpy(&buffer[4], serial_json.data(), payload_size);
+    buffer.insert(buffer.end(), serialized_json.begin(), serialized_json.end());
 
     return buffer;
 }
 
-} // namespace tc::protocol
+}

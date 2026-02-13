@@ -14,4 +14,4 @@ private:
     static std::string get_timestamp();
 };
 
-} // namespace tc
+}

@@ -7,10 +7,11 @@ namespace tc::protocol {
 
 struct MsgHeader {
     uint8_t magic[2] = {0x54, 0x43};
-    uint16_t payload_length;
+    uint8_t version = 0x01;
+    uint8_t type = 0x01;
+    uint32_t payload_length = 0;
 };
 
-// Added this declaration:
-std::vector<uint8_t> serialize(const nlohmann::json& j);
+std::vector<uint8_t> serialize(uint8_t type, const nlohmann::json& j);
 
-} // namespace tc::protocol
+}

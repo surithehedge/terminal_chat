@@ -13,10 +13,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Note: No 'setup-cmake' needed. It's pre-installed on GitHub Runners.
-
       - name: Configure CMake
-        # We use -B build to keep source tree clean per Spec 3.5
         run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 
       - name: Build Project

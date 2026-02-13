@@ -3,11 +3,11 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
-#include <mutex> // Added missing header
+#include <mutex>
 
 namespace tc {
 
-// Define the static mutex to prevent interleaved logs in the terminal
+
 static std::mutex console_mutex;
 
 std::string Logger::get_timestamp() {
@@ -35,14 +35,20 @@ std::string_view Logger::level_to_string(LogLevel level) {
 }
 
 void Logger::log(LogLevel level, std::string_view component, std::string_view message) {
-    // RAII lock ensures the mutex is released even if an exception occurs
     std::lock_guard<std::mutex> lock(console_mutex);
+    std::ostream& out = (level == LogLevel::ERR || level == LogLevel::AUDIT)
+                        ? std::cerr
+                        : std::cout;
 
-    // Format: [YYYY-MM-DD HH:MM:SS] [LEVEL] [COMPONENT] Message
-    std::cout << "[" << get_timestamp() << "] "
-              << "[" << level_to_string(level) << "] "
-              << "[" << component << "] "
-              << message << std::endl;
+    out << "[" << get_timestamp() << "] "
+        << "[" << level_to_string(level) << "] "
+        << "[" << component << "] "
+        << message << std::endl;
+
+    if (level == LogLevel::ERR) {
+        out << "[FATAL] Process terminating due to ERROR level log." << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
 }
 
-} // namespace tc
+}
