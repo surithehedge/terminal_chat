@@ -3,8 +3,12 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include <mutex> // Added missing header
 
 namespace tc {
+
+// Define the static mutex to prevent interleaved logs in the terminal
+static std::mutex console_mutex;
 
 std::string Logger::get_timestamp() {
     auto now = std::chrono::system_clock::now();
@@ -31,8 +35,10 @@ std::string_view Logger::level_to_string(LogLevel level) {
 }
 
 void Logger::log(LogLevel level, std::string_view component, std::string_view message) {
+    // RAII lock ensures the mutex is released even if an exception occurs
+    std::lock_guard<std::mutex> lock(console_mutex);
+
     // Format: [YYYY-MM-DD HH:MM:SS] [LEVEL] [COMPONENT] Message
-    std::lock_guard<std::mutex> lock(console_mutex); // Prevent interleaved logs
     std::cout << "[" << get_timestamp() << "] "
               << "[" << level_to_string(level) << "] "
               << "[" << component << "] "
