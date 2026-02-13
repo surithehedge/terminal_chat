@@ -31,7 +31,7 @@ if(NOT json_POPULATED)
     # This creates a "virtual" library that carries the include path
     add_library(nlohmann_json INTERFACE)
     # json_SOURCE_DIR points to build/_deps/json-src/
-    target_include_directories(nlohmann_json INTERFACE ${json_SOURCE_DIR}/include)
+    target_include_directories(nlohmann_json SYSTEM INTERFACE ${json_SOURCE_DIR}/include)
     add_library(nlohmann_json::nlohmann_json ALIAS nlohmann_json)
 endif()
 
