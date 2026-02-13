@@ -1,0 +1,32 @@
+name: Cross-Platform Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # This tests both environments simultaneously
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup CMake
+        uses: jasonbeverage/setup-cmake@v1
+
+      - name: Configure CMake
+        # We use -B build to keep the source tree clean
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Project
+        run: cmake --build build --config Release
+
+      - name: Run Tests
+        shell: bash
+        run: |
+          cd build
+          ctest -C Release --output-on-failure
