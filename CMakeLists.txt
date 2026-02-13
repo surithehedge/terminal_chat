@@ -8,9 +8,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Define target-specific strict flags variable
 if(MSVC)
-    set(TC_STRICT_FLAGS /W4 /WX /permissive- /std:c++20)
+    set(TC_STRICT_FLAGS /W4 /permissive- /std:c++20)
+    set(TC_WERROR_FLAG /WX)
 else()
-    set(TC_STRICT_FLAGS -Wall -Wextra -Wpedantic -Werror -fstack-protector-all)
+    set(TC_STRICT_FLAGS -Wall -Wextra -Wpedantic -fstack-protector-all)
+    set(TC_WERROR_FLAG -Werror)
 endif()
 
 include(FetchContent)
