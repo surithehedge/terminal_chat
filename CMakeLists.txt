@@ -38,7 +38,11 @@ endif()
 # 3. FTXUI (Disable examples to prevent build errors)
 set(FTXUI_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(FTXUI_ENABLE_STRICT_COMPILE OFF CACHE BOOL "" FORCE)
-FetchContent_Declare(ftxui URL https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v3.0.0.tar.gz)
+FetchContent_Declare(
+  ftxui
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI
+  GIT_TAG v5.0.0  # <--- Latest stable version handles GCC 13
+)
 FetchContent_MakeAvailable(ftxui)
 
 # 4. OpenSSL (Dynamic Linking)
