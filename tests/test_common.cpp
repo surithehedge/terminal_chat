@@ -6,7 +6,7 @@ int main() {
     tc::Logger::log(tc::LogLevel::INFO, "TEST", "Foundations Phase I initialized.");
 
     // Check constraints: Username length [cite: 123]
-    std::string test_user = "gemini_dev";
+    std::string test_user = "suri";
     assert(test_user.length() >= 3 && test_user.length() <= 16);
 
     return 0;

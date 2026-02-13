@@ -18,6 +18,9 @@ include(FetchContent)
 # 1. Asio (Standalone)
 FetchContent_Declare(asio URL https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-24-0.tar.gz)
 FetchContent_MakeAvailable(asio)
+# Asio doesn't provide CMake config, add include path manually
+set(ASIO_INCLUDE_DIR ${asio_SOURCE_DIR}/asio/include)
+include_directories(${ASIO_INCLUDE_DIR})
 
 # 2. nlohmann_json (Header-only target)
 FetchContent_Declare(
