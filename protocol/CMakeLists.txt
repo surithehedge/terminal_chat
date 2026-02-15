@@ -1,5 +1,6 @@
 add_library(tc_protocol STATIC
     src/framing.cpp
+    include/protocol/frames.hpp
 )
 
 target_include_directories(tc_protocol PUBLIC include)

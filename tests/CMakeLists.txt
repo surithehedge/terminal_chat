@@ -1,15 +1,15 @@
-# No FetchContent for GTest needed!
 add_executable(test_protocol test_protocol.cpp)
-
-target_link_libraries(test_protocol
-    PRIVATE
-        tc_protocol
-        tc_common
-)
-
+target_link_libraries(test_protocol PRIVATE tc_protocol tc_common)
 add_test(NAME ProtocolVerification COMMAND test_protocol)
+
 add_executable(test_common test_common.cpp)
 target_link_libraries(test_common PRIVATE tc_common nlohmann_json::nlohmann_json)
 add_test(NAME CommonUtilities COMMAND test_common)
-add_test(NAME ServerSmokeTest COMMAND tc_server)
-add_test(NAME ClientSmokeTest COMMAND tc_client)
+
+add_executable(test_server test_server.cpp)
+target_link_libraries(test_server PRIVATE tc_common tc_protocol)
+add_test(NAME ServerUnitTest COMMAND test_server)
+
+add_executable(test_client test_client.cpp)
+target_link_libraries(test_client PRIVATE tc_common tc_protocol OpenSSL::SSL OpenSSL::Crypto)
+add_test(NAME ClientUnitTest COMMAND test_client)

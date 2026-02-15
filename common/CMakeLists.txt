@@ -1,5 +1,6 @@
 add_library(tc_common STATIC
     src/logger.cpp
+    include/common/logger.hpp
 )
 
 target_include_directories(tc_common PUBLIC include)
