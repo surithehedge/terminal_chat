@@ -1,4 +1,8 @@
+#ifdef _WIN32
+#include <winsock2.h>
+#else
 #include <arpa/inet.h>
+#endif
 #include <asio.hpp>
 #include <asio/ssl/context.hpp>
 #include <cstring>

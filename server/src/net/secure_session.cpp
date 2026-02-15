@@ -6,7 +6,11 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#ifdef _WIN32
+#include <winsock2.h>
+#else
 #include <netinet/in.h>
+#endif
 
 namespace tc::net {
 SecureSession::SecureSession(asio::ip::tcp::socket socket,

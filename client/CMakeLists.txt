@@ -16,3 +16,7 @@ target_link_libraries(tc_client
         OpenSSL::SSL
         OpenSSL::Crypto
 )
+
+if(WIN32)
+    target_link_libraries(tc_client PRIVATE ws2_32)
+endif()

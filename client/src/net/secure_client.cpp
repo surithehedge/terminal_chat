@@ -2,6 +2,12 @@
 #include "common/logger.hpp"
 #include <iostream>
 
+#ifdef _WIN32
+#include <winsock2.h>
+#else
+#include <netinet/in.h>
+#endif
+
 namespace tc::net {
 
 SecureClient::SecureClient(asio::io_context &io_ctx,

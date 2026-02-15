@@ -17,3 +17,7 @@ target_link_libraries(tc_server
         OpenSSL::SSL
         OpenSSL::Crypto
 )
+
+if(WIN32)
+    target_link_libraries(tc_server PRIVATE ws2_32)
+endif()
